@@ -297,6 +297,16 @@
   resolved "https://registry.yarnpkg.com/@sqltools/formatter/-/formatter-1.2.3.tgz#1185726610acc37317ddab11c3c7f9066966bd20"
   integrity sha512-O3uyB/JbkAEMZaP3YqyHH7TMnex7tWyCbCI4EfJdOCoN6HIhqdJBWTM6aCCiWQ/5f5wxjgU735QAIpJbjDvmzg==
 
+"@stripe/react-stripe-js@stripe/react-stripe-js":
+  version "1.4.1"
+  resolved "https://codeload.github.com/stripe/react-stripe-js/tar.gz/c2d0f2a1d6a3807d81caf66411a475e6f19670fb"
+  dependencies:
+    prop-types "^15.7.2"
+
+"@stripe/stripe-js@stripe/stripe-js":
+  version "1.15.1"
+  resolved "https://codeload.github.com/stripe/stripe-js/tar.gz/b57e61fe96b0ce5f1a57de57f816df4804019865"
+
 "@types/json-schema@^7.0.6":
   version "7.0.7"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.7.tgz#98a993516c859eb0d5c4c8f098317a9ea68db9ad"
@@ -2126,6 +2136,11 @@ jose@^1.27.2:
   integrity sha512-6JK28rFu5ENp/yxMwM+iN7YeaInnY9B9Bggjkz5fuwLiJhbVrl2O4SJr65bdNBPl9y27fdC3Mymh+FVCvozLIg==
   dependencies:
     "@panva/asn1.js" "^1.0.0"
+
+js-cookie@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-2.2.1.tgz#69e106dc5d5806894562902aa5baec3744e9b2b8"
+  integrity sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"

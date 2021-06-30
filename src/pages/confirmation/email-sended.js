@@ -1,12 +1,12 @@
 import React from "react";
 import Head from "next/head";
 import { getSession } from "next-auth/client";
+import { Router } from "next/router";
 
 import {
   CenterBox,
   Container,
 } from "../../styles/pages/confirmation/email-sended.styles";
-import { Router } from "next/router";
 
 export default function EmailSended() {
   return (
@@ -32,7 +32,7 @@ export default function EmailSended() {
           Caixa de Entrada pedimos que verifique no Spam.
         </p>
         <br/>
-        <button onClick={() => router.push("/")}>Voltar para o ínicio</button>
+        <button onClick={() => Router.push("/")}>Voltar para o ínicio</button>
       </CenterBox>
     </Container>
   );

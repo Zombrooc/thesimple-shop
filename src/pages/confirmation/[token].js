@@ -2,12 +2,12 @@ import React from "react";
 import Head from "next/head";
 import axios from "axios";
 import { getSession, signIn } from "next-auth/client";
+import { Router } from "next/router";
 
 import {
   CenterBox,
   Container,
 } from "../../styles/pages/confirmation/account-confirmed.styles";
-import { Router } from "next/router";
 
 export default function AccountConfirmed({ confirmed }) {
   function Success() {
@@ -98,8 +98,8 @@ export const getServerSideProps = async (context) => {
 
   const session = await getSession({ req });
 
-  if (session){
-    Router.push('/')
+  if (session) {
+    Router.push("/");
   }
 
   const token = params.token;
