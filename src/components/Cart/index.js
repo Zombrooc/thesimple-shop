@@ -1,14 +1,20 @@
-import React, { useContext } from "react";
-import Link from "next/link";
+import React from "react";
 import { useRouter } from "next/router";
-
-import AppContext from "../../context/AppContext";
+import { useSession } from "next-auth/client";
+import { useDispatch, useSelector } from "react-redux";
+import { add_item, remove_item } from "../../store/ducks/cart";
+import Link from "next/link";
 
 function Cart() {
-  const appContext = useContext(AppContext);
   const router = useRouter();
 
-  const { cart } = appContext;
+  const cart  = useSelector(state => state.cart);
+  
+  const dispacth = useDispatch();
+
+  const [ session, loading ] = useSession();
+
+  console.log(cart);
 
   return (
     <div>
@@ -31,10 +37,10 @@ function Cart() {
                       >
                         <div>
                           <span id="item-price">&nbsp; ${item.price}</span>
-                          <span id="item-name">&nbsp; {item.name}</span>
+                          <span id="item-name">&nbsp; {item.title}</span>
                         </div>
                         <div>
-                          <div
+                          <button
                             style={{
                               height: 25,
                               padding: 0,
@@ -42,22 +48,23 @@ function Cart() {
                               marginRight: 5,
                               marginLeft: 10,
                             }}
-                            onClick={() => appContext.addItem(item)}
+                            onClick={() => dispatch(add_item(item))}
                             color="link"
                           >
                             +
-                          </div>
-                          <div
+                          </button>
+                          <button
                             style={{
                               height: 25,
                               padding: 0,
                               width: 15,
                               marginRight: 10,
                             }}
-                            onClick={() => appContext.removeItem(item)}
+                            onClick={() => dispatch(remove_item(item))}
+                            color="link"
                           >
                             -
-                          </div>
+                          </button>
                           <span style={{ marginLeft: 5 }} id="item-quantity">
                             {item.quantity}x
                           </span>
@@ -70,39 +77,28 @@ function Cart() {
             {session ? (
               cart.items.length > 0 ? (
                 <div>
-                  <div style={{ width: 200, padding: 10 }}>
+                  <div style={{ width: 200, padding: 10 }} color="light">
                     <h5 style={{ fontWeight: 100, color: "gray" }}>Total:</h5>
-                    <h3>${appContext.cart.total.toFixed(2)}</h3>
+                    <h3>${cart.total.toFixed(2)}</h3>
                   </div>
-                  {router.pathname === "/restaurants" && (
-                    <div
-                      style={{
-                        marginTop: 10,
-                        marginRight: 10,
-                      }}
-                    >
-                      <Link passHref="/checkout">
-                        <div style={{ width: "100%" }}>
-                          <a>Order</a>
-                        </div>
-                      </Link>
-                    </div>
-                  )}
+                  
                 </div>
               ) : (
                 <>
-                  {router.pathname === "/checkout" && (
+                  {router.pathname === "payment/checkout" && (
                     <small
                       style={{ color: "blue" }}
                       onClick={() => window.history.back()}
                     >
-                      back to restaurant
+                      Ainda não existem produtos adicionados ao seu carrinho
                     </small>
                   )}
                 </>
               )
             ) : (
-              <h5>Login to Order</h5>
+              <Link passHref="/auth/sign">
+                <a> Fazer login </a>
+              </Link>
             )}
           </div>
           {console.log(router.pathname)}
@@ -126,5 +122,4 @@ function Cart() {
     </div>
   );
 }
-
 export default Cart;

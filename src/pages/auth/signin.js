@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import {
   providers,
   signIn,
   getCsrfToken,
   getSession,
+  useSession,
 } from "next-auth/client";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineArrowLeft } from "react-icons/ai";
@@ -18,7 +19,15 @@ import {
 } from "../../styles/pages/auth/signin.styles";
 
 export default function SignIn({ csrfToken, providers }) {
+  
   const router = useRouter();
+  const [ session, loading ] = useSession();
+
+  useEffect(() => {
+    if (session){
+      Router.push('/');
+    }
+  }, [session]);
 
   return (
     <Container>
@@ -114,16 +123,10 @@ export default function SignIn({ csrfToken, providers }) {
 
 export async function getServerSideProps({ req }) {
 
-  const session = await getSession({ req });
-
-  if (session){
-    router.push('/')
-  }
-
   return {
     props: {
       csrfToken: await getCsrfToken({ req }),
-      providers: await providers(),
+      providers: await providers()
     },
   };
 }
