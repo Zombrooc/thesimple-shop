@@ -9,8 +9,8 @@ function Cart() {
   const router = useRouter();
 
   const cart  = useSelector(state => state.cart);
-  
-  const dispacth = useDispatch();
+
+  const dispatch = useDispatch();
 
   const [ session, loading ] = useSession();
 
