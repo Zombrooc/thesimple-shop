@@ -1,12 +1,12 @@
-import React, { useState, useContext } from "react";
-
-import cookieCutter from 'cookie-cutter';
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import axios from 'axios';
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { getSession } from "next-auth/client";
 
 import CardSection from "./CardSection";
 
-
-function CheckoutForm() {
+function CheckoutForm({ session }) {
   const [data, setData] = useState({
     address: "",
     city: "",
@@ -16,6 +16,7 @@ function CheckoutForm() {
   const [error, setError] = useState("");
   const stripe = useStripe();
   const elements = useElements();
+  const cart = useSelector((state) => state.cart);
 
   function onChange(e) {
     // set the key = to the name property equal to the value typed
@@ -34,18 +35,16 @@ function CheckoutForm() {
     // // e.g. createToken - https://stripe.com/docs/js/tokens_sources/create_token?type=cardElement
     // get token back from stripe to process credit card
     const token = await stripe.createToken(cardElement);
-    const userToken = cookieCutter.get("token");
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
-      method: "POST",
-      headers: userToken && { Authorization: `Bearer ${userToken}` },
-      body: JSON.stringify({
-        amount: Number(Math.round(appContext.cart.total + "e2") + "e-2"),
-        dishes: appContext.cart.items,
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/purchase-order`, {
+      data: JSON.stringify({
+        amount: Number(Math.round(cart.total + "e2") + "e-2"),
+        products: cart.items,
         address: data.address,
         city: data.city,
         state: data.state,
         token: token.token.id,
       }),
+      headers: session.accessToken && { Authorization: `Bearer ${session.accessToken}` },
     });
 
     if (!response.ok) {
@@ -69,21 +68,21 @@ function CheckoutForm() {
 
   return (
     <div className="paper">
-      <h5>Your information:</h5>
+      <h5>Suas informações:</h5>
       <hr />
       <div style={{ display: "flex" }}>
         <div style={{ flex: "0.90", marginRight: 10 }}>
-          <label>Address</label>
+          <label>Endereço</label>
           <input name="address" onChange={onChange} />
         </div>
       </div>
       <div style={{ display: "flex" }}>
         <div style={{ flex: "0.65", marginRight: "6%" }}>
-          <label>City</label>
+          <label>Cidade</label>
           <input name="city" onChange={onChange} />
         </div>
-        <div style={{ flex: "0.25", marginRight: 0 }}>
-          <label>State</label>
+        <div style={{ flex: "0.25", marginRight: "0" }}>
+          <label>Estado</label>
           <input name="state" onChange={onChange} />
         </div>
       </div>
@@ -204,4 +203,15 @@ function CheckoutForm() {
     </div>
   );
 }
+
+export async function getServerSideProps() {
+  const session = await getSession();
+
+  return {
+    props: {
+      session,
+    },
+  };
+}
+
 export default CheckoutForm;

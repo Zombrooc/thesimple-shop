@@ -46,20 +46,21 @@ export default function reducer(state = initialState, action) {
         };
       }
     case Types.REMOVE_ITEM:
+      item = action.payload;
       newItem = undefined;
-      newItem = state.items.find((i) => i.id === action.payload.item.id);
+      newItem = state.items.find((i) => i.id === item.id);
       if (newItem.quantity > 1) {
         return {
           ...state,
-          items: cart.items.map((item) =>
+          items: state.items.map((item) =>
             item.id === newItem.id
               ? Object.assign({}, item, { quantity: item.quantity - 1 })
               : item
           ),
-          total: cart.total - action.payload.item.price,
+          total: state.total - item.price,
         };
       } else {
-        const items = [...cart.items];
+        items = [...state.items];
         const index = items.findIndex((i) => i.id === newItem.id);
 
         items.splice(index, 1);
@@ -71,7 +72,6 @@ export default function reducer(state = initialState, action) {
         };
       }
     default:
-      console.log(state);
       return state;
   }
 }

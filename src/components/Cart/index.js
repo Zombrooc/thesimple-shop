@@ -2,27 +2,26 @@ import React from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/client";
 import { useDispatch, useSelector } from "react-redux";
-import { add_item, remove_item } from "../../store/ducks/cart";
 import Link from "next/link";
+import { Button, Card, CardBody, CardTitle, Badge } from "reactstrap";
+
+import { add_item, remove_item } from "../../store/ducks/cart";
 
 function Cart() {
+  const [session, loading] = useSession();
   const router = useRouter();
 
-  const cart  = useSelector(state => state.cart);
+  const cart = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
 
-  const [ session, loading ] = useSession();
-
-  console.log(cart);
-
   return (
     <div>
-      <div style={{ padding: "10px 5px" }} className="cart">
-        <div style={{ margin: 10 }}>Your Order:</div>
+      <Card style={{ padding: "10px 5px" }} className="cart">
+        <CardTitle style={{ margin: "10px" }}>Your Order:</CardTitle>
         <hr />
-        <div style={{ padding: 10 }}>
-          <div style={{ marginBottom: 6 }}>
+        <CardBody style={{ padding: "10px" }}>
+          <div style={{ marginBottom: "6px" }}>
             <small>Items:</small>
           </div>
           <div>
@@ -32,7 +31,7 @@ function Cart() {
                     return (
                       <div
                         className="items-one"
-                        style={{ marginBottom: 15 }}
+                        style={{ marginBottom: "15px" }}
                         key={item.id}
                       >
                         <div>
@@ -40,32 +39,35 @@ function Cart() {
                           <span id="item-name">&nbsp; {item.title}</span>
                         </div>
                         <div>
-                          <button
+                          <Button
                             style={{
-                              height: 25,
-                              padding: 0,
-                              width: 15,
-                              marginRight: 5,
-                              marginLeft: 10,
+                              height: "25px",
+                              padding: "0px",
+                              width: "15px",
+                              marginRight: " 5px",
+                              marginLeft: "10px",
                             }}
                             onClick={() => dispatch(add_item(item))}
                             color="link"
                           >
                             +
-                          </button>
-                          <button
+                          </Button>
+                          <Button
                             style={{
-                              height: 25,
-                              padding: 0,
-                              width: 15,
-                              marginRight: 10,
+                              height: "25px",
+                              padding: "0px",
+                              width: "15px",
+                              marginRight: "10px",
                             }}
                             onClick={() => dispatch(remove_item(item))}
                             color="link"
                           >
                             -
-                          </button>
-                          <span style={{ marginLeft: 5 }} id="item-quantity">
+                          </Button>
+                          <span
+                            style={{ marginLeft: "5px" }}
+                            id="item-quantity"
+                          >
                             {item.quantity}x
                           </span>
                         </div>
@@ -77,33 +79,35 @@ function Cart() {
             {session ? (
               cart.items.length > 0 ? (
                 <div>
-                  <div style={{ width: 200, padding: 10 }} color="light">
-                    <h5 style={{ fontWeight: 100, color: "gray" }}>Total:</h5>
-                    <h3>${cart.total.toFixed(2)}</h3>
-                  </div>
-                  
-                </div>
-              ) : (
-                <>
-                  {router.pathname === "payment/checkout" && (
-                    <small
-                      style={{ color: "blue" }}
-                      onClick={() => window.history.back()}
+                  <Badge
+                    style={{ width: "200px", padding: "10px" }}
+                    color="light"
+                  >
+                    <h5 style={{ fontWeight: "100", color: "gray" }}>Total:</h5>
+                    <h3>R${cart.total}</h3>
+                  </Badge>
+                  {router.pathname != "/payment/checkout" ? (
+                    <div
+                      style={{
+                        marginTop: "10px",
+                        marginRight: "10px",
+                      }}
                     >
-                      Ainda não existem produtos adicionados ao seu carrinho
-                    </small>
-                  )}
-                </>
-              )
+                      <Link href="/payment/checkout">
+                        <Button style={{ width: "100%" }} color="primary">
+                          <a>Finalizar Compra</a>
+                        </Button>
+                      </Link>
+                    </div>
+                  ) : null}
+                </div>
+              ) : null
             ) : (
-              <Link passHref="/auth/sign">
-                <a> Fazer login </a>
-              </Link>
+              <h5>Login to Order</h5>
             )}
           </div>
-          {console.log(router.pathname)}
-        </div>
-      </div>
+        </CardBody>
+      </Card>
       <style jsx>{`
         #item-price {
           font-size: 1.3em;

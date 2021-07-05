@@ -1,43 +1,45 @@
-import React, { useContext } from "react";
-import { getSession } from "next-auth/client"
+import React from "react";
+import { getSession } from "next-auth/client";
+import { useSelector } from "react-redux";
+import { Row, Col } from "reactstrap";
 import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
+import { Elements } from "@stripe/react-stripe-js"
 
 import InjectedCheckoutForm from "../../components/checkout/CheckoutForm";
 import Cart from "../../components/cart/";
-import { useSelector } from "react-redux";
 
-function Checkout() {
-  // get app context
-  // load stripe to inject into elements components
+function Checkout({ session }) {
   const stripePromise = loadStripe(`${process.env.STRIPE_PUBLIC}`);
+  const cart = useSelector((state) => state.cart);
 
-  const cart = useSelector(state => state.cart);
-
-  console.log(cart);
+  // if (cart.items.length === 0 || !session) {
+  //   Router.push("/");
+  // }
 
   return (
-    <div>
-      <div style={{ paddingRight: 0 }}>
-        <h1 style={{ margin: 20 }}>Checkout</h1>
+    <Row>
+      <Col
+        style={{ paddingRight: "0px" }}
+        sm={{ size: 3, order: 1, offset: 2 }}
+      >
+        <h1 style={{ margin: "20px" }}>Checkout</h1>
         <Cart />
-      </div>
-      <div style={{ paddingLeft: 5 }}>
-        <Elements stripe={stripePromise}>
-          <InjectedCheckoutForm />
-        </Elements>
-      </div>
-    </div>
+      </Col>
+      <Col style={{ paddingLeft: "5px" }} sm={{ size: 6, order: 2 }}>
+          <Elements stripe={stripePromise}>
+            <InjectedCheckoutForm context={cart} />
+          </Elements>
+      </Col>
+    </Row>
   );
-  // }
 }
 
-export async function getServerSideProps(ctx){
+export async function getServerSideProps() {
   return {
     props: {
-      session: await getSession(ctx)
-    }
-  }
+      session: await getSession(),
+    },
+  };
 }
 
 export default Checkout;

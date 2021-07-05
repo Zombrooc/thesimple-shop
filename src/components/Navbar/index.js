@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { signIn, signOut, useSession } from "next-auth/client";
+import Image from "next/image";
 import Link from "next/link";
 import { MdClose, MdMenu } from "react-icons/md";
 
 import useWindowSize from "../useWindowSize.js";
 
-import logoWithoutTagline from '../../assets/images/logoWithoutTagline.svg';
+import logoWithoutTagline from "../../assets/images/logoWithoutTagline.svg";
 
 import {
   Nav,
@@ -39,11 +40,11 @@ function Navbar() {
         <Title>
           <Link href="/">
             <a>
-              <img src={logoWithoutTagline} alt="The Simple TECH"/>
+              <Image src={logoWithoutTagline} alt="The Simple TECH" />
             </a>
           </Link>
         </Title>
-        {/* <ToggleButton onClick={menuHandler}>
+        <ToggleButton onClick={menuHandler}>
           {!menuStatus && <MdMenu />}
         </ToggleButton>
         <Menu isOpen={menuStatus}>
@@ -53,7 +54,7 @@ function Navbar() {
           {!session && (
             <>
               <MenuItem>
-                  <a onClick={() => signIn()}>Entrar</a>
+                <a onClick={() => signIn()}>Entrar</a>
               </MenuItem>
               <MenuItem>
                 <Link href="/auth/signup">
@@ -70,18 +71,23 @@ function Navbar() {
                 </Link>
               </MenuItem>
               <MenuItem>
-                <a onClick={() => signOut()}>
+                <a
+                  onClick={() => signOut()}
+                  style={{ color: "var(--color-light)" }}
+                >
                   Sair
                 </a>
               </MenuItem>
             </>
           )}
           <MenuItem>
-            <Link href="/services/request-assistence">
-              <a className="active"><strong>Solicitar Assistêcia Técnica</strong></a>
+            <Link href="/payment/checkout">
+              <a className="active">
+                <strong>Finalizar compra</strong>
+              </a>
             </Link>
           </MenuItem>
-        </Menu> */}
+        </Menu>
       </Container>
     </Nav>
   );

@@ -1,102 +1,88 @@
 import React from "react";
 import axios from "axios";
-import { signIn, signOut } from "next-auth/client";
-import { useSession } from "next-auth/client";
-import { useDispatch, useSelector } from "react-redux";
-import Link from 'next/link';
+import { useDispatch } from "react-redux";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardImg,
+  CardTitle,
+  Col,
+  Row,
+} from "reactstrap";
+
+import Navbar from "../components/Navbar";
+import Cart from "../components/Cart";
 
 import { add_item } from "../store/ducks/cart";
 
-// import { Container } from "../styles/pages/home.styles";
-
 export default function Home({ products }) {
-  const [session, loading] = useSession();
-
-  const cart = useSelector((state) => state.cart);
-
-  console.log(cart);
 
   const dispatch = useDispatch();
 
-  const signInButtonNode = () => {
-    if (session) {
-      return false;
-    }
-
-    return (
-      <div>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            signIn();
-          }}
-        >
-          Sign In
-        </button>
-      </div>
-    );
-  };
-
-  const signOutButtonNode = () => {
-    if (!session) {
-      return false;
-    }
-
-    return (
-      <div>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            signOut();
-          }}
-        >
-          Sign Out
-        </button>
-      </div>
-    );
-  };
-
-  if (!session) {
-    return (
-      <div className="hero">
-        <div className="navbar">
-          {signOutButtonNode()}
-          {signInButtonNode()}
-        </div>
-        <div className="text">You authorized to view this page</div>
-      </div>
-    );
-  }
-
   return (
-    <div className="hero">
-      <div className="navbar">
-        {signOutButtonNode()}
-        {signInButtonNode()}
-      </div>
-      <div className="text">
-        {products.map((product) => (
-          <div key={product.id}>
-            <h1> {product.title} </h1>
-            <h3>{product.price}</h3>
-            <div className="card-footer">
-              <button onClick={() => dispatch(add_item(product))}>
-                + Add To Cart
-              </button>
-            </div>
+    <>
+      <header style={{marginBottom: '100px'}}>
+        <Navbar />
+      </header>
+      <Row>
+        <Col xs="9" style={{ padding: "0px" }}>
+          <div style={{ display: "inline-block" }} className="h-100">
+            {products.map((res) => (
+              <Card style={{ width: "30%", margin: "0 10px" }} key={res.id}>
+                <CardImg
+                  top={true}
+                  style={{ height: 250 }}
+                  src={`${res.images[0].url}`}
+                />
+                <CardBody>
+                  <CardTitle>{res.title}</CardTitle>
+                </CardBody>
+                <div className="card-footer">
+                  <Button
+                    onClick={() => dispatch(add_item(res))}
+                    outline
+                    color="primary"
+                  >
+                    + Adicionar ao Carrinho
+                  </Button>
+
+                  <style jsx>
+                    {`
+                      a {
+                        color: white;
+                      }
+                      a:link {
+                        text-decoration: none;
+                        color: white;
+                      }
+                      .container-fluid {
+                        margin-bottom: 30px;
+                      }
+                      .btn-outline-primary {
+                        color: #007bff !important;
+                      }
+                      a:hover {
+                        color: white !important;
+                      }
+                    `}
+                  </style>
+                </div>
+              </Card>
+            ))}
           </div>
-        ))}
-      </div>
-      <Link href="/payment/checkout">
-        <a> ashasuhuh </a>
-      </Link>
-    </div>
+        </Col>
+        <Col xs="3" style={{ padding: 0 }}>
+          <div>
+            <Cart />
+          </div>
+        </Col>
+      </Row>
+    </>
   );
 }
 
 export async function getServerSideProps() {
-
-
   const products = await axios.get(
     `${process.env.NEXT_PUBLIC_API_URL}/products`,
     { responseType: "json" }
@@ -111,6 +97,6 @@ export async function getServerSideProps() {
   return {
     props: {
       products: products.data,
-    }
+    },
   };
 }
