@@ -55,7 +55,7 @@ function Navbar() {
             <>
               <MenuItem>
                 <Link href="/auth/signin">
-                  <a>Cadastrar</a>
+                  <a>Entrar</a>
                 </Link>
               </MenuItem>
               <MenuItem>
