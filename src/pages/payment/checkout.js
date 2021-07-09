@@ -7,7 +7,7 @@ import axios from "axios";
 // import { Elements } from "@stripe/react-stripe-js"
 
 // import InjectedCheckoutForm from "../../components/checkout/CheckoutForm";
-import Cart from "../../components/cart/";
+import Cart from '../../components/Cart';
 import CardSection from "../../components/checkout/CardSection";
 import { PaymentMethod } from "../../styles/pages/payment/checkout";
 
