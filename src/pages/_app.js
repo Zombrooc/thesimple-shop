@@ -1,7 +1,6 @@
 import React from "react";
 import Head from "next/head";
 import { Provider } from "next-auth/client";
-import Script from "next/script";
 import { Container } from "reactstrap";
 
 import { store } from "../store/index";
@@ -26,13 +25,13 @@ function MyApp({ Component, pageProps }) {
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossOrigin="anonymous"
         />
-        <Script src="https://js.stripe.com/v3" />
+        {/* <Script src="https://js.stripe.com/v3" /> */}
       </Head>
       <Container>
         <Component {...pageProps} />
       </Container>
       <GlobalStyles />
-      <style jsx global>
+      {/* <style jsx global>
         {`
           a {
             color: white !important;
@@ -51,7 +50,7 @@ function MyApp({ Component, pageProps }) {
             column-count: 3;
           }
         `}
-      </style>
+      </style> */}
     </Provider>
   );
 }

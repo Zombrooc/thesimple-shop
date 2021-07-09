@@ -18,11 +18,11 @@ function Cart() {
   return (
     <div>
       <Card style={{ padding: "10px 5px" }} className="cart">
-        <CardTitle style={{ margin: "10px" }}>Your Order:</CardTitle>
+        <CardTitle style={{ margin: "10px" }}>Seu pedido:</CardTitle>
         <hr />
         <CardBody style={{ padding: "10px" }}>
           <div style={{ marginBottom: "6px" }}>
-            <small>Items:</small>
+            <small>Itens:</small>
           </div>
           <div>
             {cart.items
@@ -35,7 +35,7 @@ function Cart() {
                         key={item.id}
                       >
                         <div>
-                          <span id="item-price">&nbsp; ${item.price}</span>
+                          <span id="item-price">&nbsp; R${item.unit_price.toFixed(2)}</span>
                           <span id="item-name">&nbsp; {item.title}</span>
                         </div>
                         <div>
@@ -84,7 +84,7 @@ function Cart() {
                     color="light"
                   >
                     <h5 style={{ fontWeight: "100", color: "gray" }}>Total:</h5>
-                    <h3>R${cart.total}</h3>
+                    <h3>R${cart.total.toFixed(2)}</h3>
                   </Badge>
                   {router.pathname != "/payment/checkout" ? (
                     <div
@@ -101,9 +101,17 @@ function Cart() {
                     </div>
                   ) : null}
                 </div>
-              ) : null
+              ) : (
+                <h5 style={{ textAlign: "center" }}>
+                  Não existe nenhum item no seu carrinho 😥.
+                </h5>
+              )
             ) : (
-              <h5>Login to Order</h5>
+              <h5>
+                <Link href="/auth/login">
+                  <a>Faça seu login para terminar sua compra</a>
+                </Link>
+              </h5>
             )}
           </div>
         </CardBody>

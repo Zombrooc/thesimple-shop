@@ -17,12 +17,11 @@ import Cart from "../components/Cart";
 import { add_item } from "../store/ducks/cart";
 
 export default function Home({ products }) {
-
   const dispatch = useDispatch();
 
   return (
     <>
-      <header style={{marginBottom: '100px'}}>
+      <header style={{ marginBottom: "100px" }}>
         <Navbar />
       </header>
       <Row>
@@ -37,6 +36,7 @@ export default function Home({ products }) {
                 />
                 <CardBody>
                   <CardTitle>{res.title}</CardTitle>
+                  <CardBody> R$ {res.unit_price.toFixed(2)}</CardBody>
                 </CardBody>
                 <div className="card-footer">
                   <Button

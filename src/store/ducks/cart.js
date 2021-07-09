@@ -32,7 +32,7 @@ export default function reducer(state = initialState, action) {
         return {
           ...state,
           items: [...state.items, item],
-          total: state.total + item.price,
+          total: state.total + item.unit_price,
         };
       } else {
         return {
@@ -42,7 +42,7 @@ export default function reducer(state = initialState, action) {
               ? Object.assign({}, item, { quantity: item.quantity + 1 })
               : item
           ),
-          total: state.total + item.price,
+          total: state.total + item.unit_price,
         };
       }
     case Types.REMOVE_ITEM:
@@ -57,7 +57,7 @@ export default function reducer(state = initialState, action) {
               ? Object.assign({}, item, { quantity: item.quantity - 1 })
               : item
           ),
-          total: state.total - item.price,
+          total: state.total - item.unit_price,
         };
       } else {
         items = [...state.items];
@@ -68,7 +68,7 @@ export default function reducer(state = initialState, action) {
         return {
           ...state,
           items: items,
-          total: state.total - item.price,
+          total: state.total - item.unit_price,
         };
       }
     default:
