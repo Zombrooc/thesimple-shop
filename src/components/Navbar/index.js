@@ -54,7 +54,9 @@ function Navbar() {
           {!session && (
             <>
               <MenuItem>
-                <a onClick={() => signIn()}>Entrar</a>
+                <Link href="/auth/signin">
+                  <a>Cadastrar</a>
+                </Link>
               </MenuItem>
               <MenuItem>
                 <Link href="/auth/signup">
